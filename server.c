@@ -3,6 +3,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+const char MESSAGE[] = "Hello, my name is SOCKET!\n";
+
 int main(){
    int server_socket;
    struct sockaddr_in simpleServer;
@@ -51,17 +53,13 @@ int main(){
         close(server_socket);
         return -1;
     }
-    else{
-        char * buffer;
-        printf("Connected to client!\nType message: ");
-        scanf("%s", buffer);
-        write(simpleClient, buffer, sizeof(*buffer));
-        close(simpleClient);
-    }
+    
+    printf("Accepted connection!\n");
+    write(simpleClient, MESSAGE, strlen(MESSAGE));
+    close(simpleClient);
+    break;
+   }
 
-    close(server_socket);
-    return 0;
-   }    
-
-   return server_socket;
+   close(server_socket);
+   return 0;    
 }

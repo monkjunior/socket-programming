@@ -7,6 +7,7 @@ int main(){
     int clientSocket;
     struct sockaddr_in simpleServer;
     int returnStatus;
+    char buffer[256] = "";
 
     clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -25,11 +26,21 @@ int main(){
 
     if (returnStatus == 0){
         printf("Connect successfully!\n");
+        
     }
     else{
         printf("Can not connect to server socket!\n");
         close(clientSocket);
         return-1;
+    }
+    
+    /*Get message from the server*/
+    returnStatus = read(clientSocket, buffer, sizeof(buffer));
+    if (returnStatus > 0){
+        printf("%d: %s\n", returnStatus, buffer);
+    }
+    else{
+        printf("Read unsuccessfully! Return %d\n", returnStatus);
     }
 
     return 0;
