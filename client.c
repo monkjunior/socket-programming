@@ -5,7 +5,7 @@
 
 int main(){
     int clientSocket;
-    struct sockaddr_in simpleServer;
+    struct sockaddr_in server_address;
     int returnStatus;
     char buffer[256] = "";
 
@@ -18,11 +18,11 @@ int main(){
 
     printf("Client socket = %d\n", clientSocket);
 
-    simpleServer.sin_family = AF_INET;
-    simpleServer.sin_addr.s_addr = htonl(INADDR_ANY);
-    simpleServer.sin_port = htons(8000);
+    server_address.sin_family = AF_INET;
+    server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_address.sin_port = htons(8000);
 
-    returnStatus = connect(clientSocket, (struct sockaddr *)&simpleServer, sizeof(simpleServer));
+    returnStatus = connect(clientSocket, (struct sockaddr *)&server_address, sizeof(server_address));
 
     if (returnStatus == 0){
         printf("Connect successfully!\n");

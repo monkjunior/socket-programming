@@ -7,7 +7,7 @@ const char MESSAGE[] = "Hello, my name is SOCKET!\n";
 
 int main(){
    int server_socket;
-   struct sockaddr_in simpleServer;
+   struct sockaddr_in server_address;
    int returnStatus;
 
    server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -17,11 +17,11 @@ int main(){
    } 
    printf("Server socket = %d\n", server_socket);
 
-   simpleServer.sin_family = AF_INET;
-   simpleServer.sin_addr.s_addr = htonl(INADDR_ANY);
-   simpleServer.sin_port = htons(8000);
+   server_address.sin_family = AF_INET;
+   server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+   server_address.sin_port = htons(8000);
 
-   returnStatus = bind(server_socket, (struct sockaddr *)&simpleServer, sizeof(simpleServer));
+   returnStatus = bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
    if (returnStatus == 0){
        printf("Bind completerd!\n");
    }
@@ -37,16 +37,16 @@ int main(){
        close(server_socket);
        return -1;
    }
-   printf("Server is listening on port %d!\n", simpleServer.sin_port);
+   printf("Server is listening on port %d!\n", server_address.sin_port);
    
    while(1){
     /*Set up variables to handle client connect*/
-    struct sockaddr_in clientName = {0};
+    struct sockaddr_in client_address = {0};
     int simpleClient;
-    int clientNameLength = sizeof(clientName);
+    int client_addressLength = sizeof(client_address);
 
     /*Block on accecpt function call*/
-    simpleClient = accept(server_socket, (struct sockaddr *)&clientName, &clientNameLength);
+    simpleClient = accept(server_socket, (struct sockaddr *)&client_address, &client_addressLength);
 
     if (simpleClient == -1){
         printf("Cannot accept connection!\n");
