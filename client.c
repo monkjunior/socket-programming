@@ -17,6 +17,9 @@ int main(){
     }
 
     printf("Client socket = %d\n", clientSocket);
+    /*Clear temp data then set up server_address
+    **Why we use bzero() instead using memset() ?*/
+    bzero(&server_address, sizeof(server_address));
 
     server_address.sin_family = AF_INET;
     server_address.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -35,7 +38,7 @@ int main(){
     }
     
     /*Get message from the server*/
-    returnStatus = read(clientSocket, buffer, sizeof(buffer));
+    returnStatus = read(clientSocket, &buffer, sizeof(buffer));
     if (returnStatus > 0){
         printf("%d: %s\n", returnStatus, buffer);
     }

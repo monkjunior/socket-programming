@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netdb.h>
-
-const char MESSAGE[] = "Hello, my name is SOCKET!\n";
+#include <strings.h>
 
 int main(){
    int server_socket;
    struct sockaddr_in server_address;
    int returnStatus;
+   char * message;
+   char buffer[256]="This is ted!";
 
    server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
    if (server_socket == -1){
@@ -16,6 +17,9 @@ int main(){
     return -1;
    } 
    printf("Server socket = %d\n", server_socket);
+   /*Clear temp data then set up server_address
+   **Why we use bzero() instead using memset() ?*/
+   bzero(&server_address, sizeof(server_address));
 
    server_address.sin_family = AF_INET;
    server_address.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -53,9 +57,10 @@ int main(){
         close(server_socket);
         return -1;
     }
-    
-    printf("Accepted connection!\n");
-    write(simpleClient, MESSAGE, strlen(MESSAGE));
+
+    printf("Connect successfully!\n");
+    write(simpleClient, buffer, strlen(buffer));
+    printf("\nSent: %s", buffer);
     close(simpleClient);
     break;
    }
