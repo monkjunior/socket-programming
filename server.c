@@ -58,7 +58,8 @@ int main(){
         return -1;
     }
 
-    printf("Connect successfully!\n");
+    printf("Type your messages:\n");
+    gets(buffer);
     write(simpleClient, buffer, strlen(buffer));
     printf("\nSent: %s", buffer);
     close(simpleClient);
