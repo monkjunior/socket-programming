@@ -4,26 +4,36 @@
 #include <netdb.h>
 #include <strings.h>
 
-int main(){
+int main(int argc, char *argv[]){
+   /*Check if right input port*/
+   if( argc != 2 ){
+       printf("Wrong input!\n");
+       return -1;
+   } 
+
    int server_socket;
+   int server_port;
    struct sockaddr_in server_address;
    int returnStatus;
    char * message;
    char buffer[256]="This is ted!";
 
+   /*Initialize socket and server's port*/
    server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
    if (server_socket == -1){
     printf("Unsuccessfull creating server socket!\n");
     return -1;
    } 
-   printf("Server socket = %d\n", server_socket);
+   server_port = atoi(argv[1]);
+   printf("Server port: %d\n", server_port);
+
    /*Clear temp data then set up server_address
    **Why we use bzero() instead using memset() ?*/
    bzero(&server_address, sizeof(server_address));
 
    server_address.sin_family = AF_INET;
    server_address.sin_addr.s_addr = htonl(INADDR_ANY);
-   server_address.sin_port = htons(8000);
+   server_address.sin_port = htons(server_port);
 
    returnStatus = bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
    if (returnStatus == 0){
@@ -41,7 +51,7 @@ int main(){
        close(server_socket);
        return -1;
    }
-   printf("Server is listening on port %d!\n", server_address.sin_port);
+   printf("Server is listening on port %d!\n", ntohs(server_address.sin_port));
    
    while(1){
     /*Set up variables to handle client connect*/
