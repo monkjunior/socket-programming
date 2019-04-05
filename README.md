@@ -1,1 +1,1 @@
-# client-server-socket-programming
+# socket-programming
